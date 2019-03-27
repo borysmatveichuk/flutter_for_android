@@ -31,8 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static const platform = const MethodChannel('flutter.example.com.channel');
 
+
   @override
   Widget build(BuildContext context) {
+
+    platform.setMethodCallHandler(_handleMethod);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -53,5 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<Null> _showNativeView() async {
     await platform.invokeMethod('showNativeView');
+  }
+
+  Future<dynamic> _handleMethod(MethodCall call) async {
+    switch(call.method) {
+      case "message":
+        debugPrint(call.arguments);
+        return new Future.value("");
+    }
   }
 }
